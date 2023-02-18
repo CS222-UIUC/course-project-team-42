@@ -65,11 +65,14 @@ We will have our meeting on Sunday 3 PM - 4 PM each week. During the meeting, te
 
 | Week |                       Task Description                       |
 | :--: | :----------------------------------------------------------: |
-| 1-2  | Design User Interface; Confirm the required libraries for the project and install them; Set up GitHub Repo |
-| 3-4  | Start to set up the frontend and build the main page for our Application; Test the NER algorithm in Python for a specific website (Wikipedia) for backend |
-| 5-6  | Design the result panel for Wikipedia for the frontend;  Implement web Crawler in the backend and prepare for using NER algorithm given arbitrary website |
-| 7-8  | Create Login Page in the frontend; Create the Database for users in GCP |
-| 9-10 | Integrate the application; Add creative functions based on our project progress |
+|  1   | Design User Interface; Confirm the required libraries for the project and install them; Set up GitHub Repo |
+|  2   | Start to set up the frontend and build the main page for our Application |
+|  3   | Test the NER algorithm in Python for a specific website (Wikipedia) for backend |
+|  4   |    Design the result panel for Wikipedia for the frontend    |
+|  5   | Implement web Crawler in the backend and prepare for using NER algorithm given arbitrary website |
+|  6   | Create Login Page in the frontend; Create the Database for users in GCP |
+|  7   |            Connect the database with the backend             |
+|  8   | Integrate the application; Add creative functions based on our project progress |
 
 #### Continuous Integration
 
@@ -87,4 +90,4 @@ In the `Unitest` library, there is unittest coverage command to generate a test 
 
 ##### Pull Request Workflow 
 
-We divide our team into a frontend group and a backend group and both groups have two team members.  If someone needs to create a PR, the other person on the same team needs to review the PR and provide feedback. If the reviewer cannot handle this PR, the other team will help to review it. In our weekly meeting, we will assign tasks to each team member that works on different parts of the project to avoid merge conflicts. 
+We divide our team into a frontend group, and a backend group and both groups have two team members.  If someone needs to create a PR, the other person on the same team needs to review the PR and provide feedback. If the reviewer cannot handle this PR, the other team will help to review it. In our weekly meeting, we will assign tasks to each team member that works on different parts of the project to avoid merge conflicts. 
