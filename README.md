@@ -35,7 +35,7 @@ We will separate our web application into two primary parts: frontend and backen
 - We will implement the frontend using JavaScript programming language and the React framework. JavaScript is a popular scripting language used for web development. It allows us to create dynamically updating content easily. We will be using React, a JavaScript library, to create our user interface for the website even faster.
 - We will implement an interface where users can put in their text and trigger the webpage to send information to the backend, where our implemented NER algorithm with detect named entities, and return back the entities to the webpage. 
 
-<img src="Project Proposal.assets/image-20230208212332232.png" alt="image-20230208212332232" style="zoom:50%;" />
+<img src="Images/InteractDiagram.png" alt="InteractDiagram" style="zoom:50%;" />
 
 #### Teamwork
 
@@ -78,7 +78,7 @@ We will have our meeting on Sunday 3 PM - 4 PM each week. During the meeting, te
 
 ##### Test Library
 
-For now, we have decided to use Python to write our backend. We will use `Unitest` library to debug and test our code. Here is the [link](https://docs.python.org/3/library/unittest.html) for more information. 
+For now, we have decided to use Python to write our backend. We will use `unittest` library to debug and test our code. Here is the [link](https://docs.python.org/3/library/unittest.html) for more information. 
 
 ##### Style Guide
 
@@ -86,7 +86,7 @@ For the naming of variables and functions, we will follow the [Camel Case](https
 
 ##### Test Coverage
 
-In the `Unitest` library, there is unittest coverage command to generate a test coverage report. Here is the [tutorial](https://www.pythontutorial.net/python-unit-testing/python-unittest-coverage/).
+In the `unittest` library, there is unittest coverage command to generate a test coverage report. Here is the [tutorial](https://www.pythontutorial.net/python-unit-testing/python-unittest-coverage/).
 
 ##### Pull Request Workflow 
 
