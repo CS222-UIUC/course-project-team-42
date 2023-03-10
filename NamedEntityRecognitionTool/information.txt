@@ -8,10 +8,11 @@ python -m spacy download en_core_web_sm
 // need to run this everytime you want to start server
 pipenv shell
 
-// this line creates the project
+// this line creates the project (do not need to run)
 django-admin startproject django-ner-tool
-// this line creates the app wiki_test
+// this line creates the app wiki_test (do not need to run)
 python manage.py startapp wiki_test
+
 // this line is what you will run when you want to start server
 python manage.py runserver
 

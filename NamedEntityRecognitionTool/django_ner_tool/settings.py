@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    ##
+    # adding wiki_test to allow wiki_test app
     'wiki_test',
     'corsheaders',
 ]
@@ -45,9 +45,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    ##
+    # adding corsheaders.middleware
     "corsheaders.middleware.CorsMiddleware",
-    ##
+    # adding corsheaders.middleware
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
