@@ -13,19 +13,35 @@ function App() {
     e.preventDefault()
     let str = inputTextRef.current.value
 
-    /*
+    // /*
     fetch('./NamedEntityRecognitionTool/manage.py',{
-      method: 'POST'
-    })
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({string: str })
+    }).then(response => response.json())
+    .then(data => {setResult(data)})
 
-    */
-    
+    // */
     setResult(str)
   } 
 
   function fileClickHandler(e) {
     e.preventDefault()
     const file = inputFileRef.current.value
+    // /*
+    const formData = new FormData()
+    formData.append('file', {file})
+    fetch('./NamedEntityRecognitionTool/manage.py',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: formData
+    }).then(response => response.json())
+    .then(data => {setResult(data)})
+    // */
 
     setResult(file)
   } 
