@@ -31,8 +31,8 @@ def getWikiSummary(request):
     data = {
         # 'summary': wikipedia.summary(topic,sentences=2),
         'content': content,
-        '<br> <br> raw data': 'Successful',
-        '<br> <br> entity': ner_str,
+        'raw data': 'Successful',
+        'entity': ner_str,
     }
     print('json-data to be sent: ', data)
     return HttpResponse(JsonResponse(data))
@@ -50,6 +50,6 @@ def jsonToNER(s):
     for ent in doc.ents:
         label = ent.label_
         if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
-            output += (ent.text + " - " + ent.label_ + "<br>") 
+            output += (ent.text + " - " + ent.label_ + "\n") 
         # print(ent.text, ent.label_)
     return output

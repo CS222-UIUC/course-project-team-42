@@ -1,3 +1,4 @@
+-------------------------  for backend django  -------------------------
 // need to download the below libraries
 pipenv install django
 pipenv install django-cors-headers
@@ -16,6 +17,17 @@ python manage.py startapp wiki_test
 // this line is what you will run when you want to start server
 python manage.py runserver
 
-// in general, it is the below lines:
+// in general, to start project:
 pipenv shell
 python manage.py runserver
+
+
+-------------------------  for frontend react  -------------------------
+// if you do not have node_modules
+npm install
+// need to download the below libraries
+npm install cors
+npm install axios
+
+// to start project:
+npm start
