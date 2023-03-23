@@ -22,10 +22,17 @@ def index(request):
 # will return an HttpResponse containing necessary data, transformed from json
 def getWikiSummary(request):
     topic = request.GET.get('topic', None)
-    content = wikipedia.page(topic).content
-
+    try:
+        content = wikipedia.page(topic).content
+    except(wikipedia.exceptions.PageError):
+        data = {
+            # 'summary': wikipedia.summary(topic,sentences=2),
+            'content': "Error Message",
+            'raw data': 'Unsuccessful',
+            'entity': "Input is not a valid wiki page",
+        }
+        return HttpResponse(JsonResponse(data))
     print('topic:', topic)
-
     ner_str = jsonToNER(content)
     # 'content': wikipedia.page(topic).content,
     data = {
