@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-// import axios from "axios";
+import axios from "axios";
 // import './App.css';
 // import TextBlock from './TextBlock';
 // import FileBlock from './FileBlock';
@@ -19,37 +19,35 @@ function App() {
     let str = inputTextRef.current.value
 
     // /*
-    fetch('./NamedEntityRecognitionTool/manage.py',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({string: str })
-    }).then(response => response.json())
-    .then(data => {setResult(data)})
+    axios.post("./NamedEntityRecognitionTool/manage.py", {
+      string: str
+    }).then(response => {
+      setResult(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
 
     // */
-    setResult(str)
+    // setResult(str)
   } 
 
 
   function fileClickHandler(e) {
     e.preventDefault()
-    const file = inputFileRef.current.value
-    // /*
-    const formData = new FormData()
-    formData.append('file', {file})
-    fetch('./NamedEntityRecognitionTool/manage.py',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: formData
-    }).then(response => response.json())
-    .then(data => {setResult(data)})
-    // */
+    const file = inputFileRef.current.files[0];
+  
+    const formData = new FormData();
+    formData.append("file", file);
 
-    setResult(file)
+    axios.post("./NamedEntityRecognitionTool/manage.py", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then(response => {
+        setResult(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
   } 
   
 
@@ -65,14 +63,16 @@ function App() {
    * which triggers django backend to run NER algorithm and send back json info,
    * which we then use to update our resultWiki state.
    */
-  // const handleSubmitWiki = async (topic) => {
-  //   const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
-  //     withCredentials: false,
-  //   });
-  //   const output = response.data.entity;
-  //   const output_format = output.replace(/\n/g, "<br />");
-  //   setResultWiki(output_format);
-  // }
+  /*
+   const handleSubmitWiki = async (topic) => {
+     const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
+       withCredentials: false,
+     });
+     const output = response.data.entity;
+     const output_format = output.replace(/\n/g, "<br />");
+     setResultWiki(output_format);
+   }
+   */
 
 
   /* We are currently focusing on 3 primary blocks: TextBlock, FileBlock, WikiBlock 
