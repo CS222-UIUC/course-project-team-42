@@ -3,7 +3,7 @@ import axios from "axios";
 import './App.css';
 // import TextBlock from './TextBlock';
 // import FileBlock from './FileBlock';
-import WikiBlock from './WikiBlock';
+// import WikiBlock from './WikiBlock';
 // import { TextInput } from 'react-native';
 
 
@@ -26,10 +26,11 @@ function App() {
   }
 
 
+
 function fileClickHandler(e) {
     e.preventDefault()
     const file = inputFileRef.current.files[0];
-  
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -42,8 +43,8 @@ function fileClickHandler(e) {
     }).catch(error => {
       console.error(error);
     });
-  }
-  
+  } 
+
 
 
   return (
