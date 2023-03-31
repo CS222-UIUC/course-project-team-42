@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import include
 
+# urlpatterns allows followup urls
+# e.g. http://127.0.0.1:8000/wiki/
+# when adding /wiki/ at the end, django will look for wiki_test.urls urlpatterns
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('wiki/', include('wiki_test.urls')),

@@ -3,45 +3,60 @@ from django.shortcuts import render
 # Create your views here.
 
 import json
-from django.contrib.auth.models import User #####
-from django.http import JsonResponse , HttpResponse ####
+from django.contrib.auth.models import User 
+from django.http import JsonResponse , HttpResponse
 
 import wikipedia
-# from . import ner
 import spacy
 
+# default function.
+# this function will output a simple HttpResponse.
+# can be used to test default success.
 def index(request):
     return HttpResponse("Hello, world. <br> You're at the wiki index.")
 
 
-# https://pypi.org/project/wikipedia/#description
-def get_wiki_summary(request):
+# this function obtains a request when url called in format http://127.0.0.1:8000/wiki/get_ner_on/?topic="xxx"/
+# request.GET.get('topic', None) will obtain "xxx".
+# wikipedia.page(topic).content will get the main content (type str) of the specific wikipedia page.
+# will return an HttpResponse containing necessary data, transformed from json
+def getWikiSummary(request):
     topic = request.GET.get('topic', None)
-    content = wikipedia.page(topic).content
-
+    try:
+        content = wikipedia.page(topic).content
+    except(wikipedia.exceptions.PageError):
+        data = {
+            # 'summary': wikipedia.summary(topic,sentences=2),
+            'content': "Error Message",
+            'raw data': 'Unsuccessful',
+            'entity': "Input is not a valid wiki page",
+        }
+        return HttpResponse(JsonResponse(data))
     print('topic:', topic)
-
-    ner_str = json_to_ner(content)
+    ner_str = jsonToNER(content)
     # 'content': wikipedia.page(topic).content,
     data = {
         # 'summary': wikipedia.summary(topic,sentences=2),
         'content': content,
-        '<br> <br> raw data': 'Successful',
-        '<br> <br> entity': ner_str,
+        'raw data': 'Successful',
+        'entity': ner_str,
     }
-    # data2 = {'raw': 'Successfulfff'}
-
     print('json-data to be sent: ', data)
-
     return HttpResponse(JsonResponse(data))
 
-def json_to_ner(s):
+
+# main NER algorithm, using spacy library, en_core_web_sm training data.
+# input: str, wikipedia content
+# can change input to necessary text in future development
+# return type: str
+# returns a concatenated str of named entities with their corresponding tags
+def jsonToNER(s):
     nlp = spacy.load("en_core_web_sm")
     doc = nlp(s)
     output = ""
     for ent in doc.ents:
         label = ent.label_
         if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
-            output += (ent.text + " - " + ent.label_ + "<br>") 
+            output += (ent.text + " - " + ent.label_ + "\n") 
         # print(ent.text, ent.label_)
     return output
