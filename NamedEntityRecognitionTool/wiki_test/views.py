@@ -1,13 +1,10 @@
 from django.shortcuts import render
-
-# Create your views here.
-
 import json
 from django.contrib.auth.models import User 
 from django.http import JsonResponse , HttpResponse
-
 import wikipedia
 import spacy
+
 
 # default function.
 # this function will output a simple HttpResponse.
@@ -26,7 +23,6 @@ def getWikiSummary(request):
         content = wikipedia.page(topic).content
     except(wikipedia.exceptions.PageError):
         data = {
-            # 'summary': wikipedia.summary(topic,sentences=2),
             'content': "Error Message",
             'raw data': 'Unsuccessful',
             'entity': "Input is not a valid wiki page",
@@ -34,9 +30,7 @@ def getWikiSummary(request):
         return HttpResponse(JsonResponse(data))
     print('topic:', topic)
     ner_str = jsonToNER(content)
-    # 'content': wikipedia.page(topic).content,
     data = {
-        # 'summary': wikipedia.summary(topic,sentences=2),
         'content': content,
         'raw data': 'Successful',
         'entity': ner_str,
@@ -58,5 +52,4 @@ def jsonToNER(s):
         label = ent.label_
         if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
             output += (ent.text + " - " + ent.label_ + "\n") 
-        # print(ent.text, ent.label_)
     return output

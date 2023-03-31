@@ -1,5 +1,8 @@
 import sqlite3
 
+
+# creating the database
+# using sql in general
 connection = sqlite3.connect('userinfo.db')
 
 cursor = connection.cursor()
