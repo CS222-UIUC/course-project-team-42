@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-// import axios from "axios";
-// import './App.css';
+import axios from "axios";
+import './App.css';
 // import TextBlock from './TextBlock';
 // import FileBlock from './FileBlock';
-// import WikiBlock from './WikiBlock';
+import WikiBlock from './WikiBlock';
 // import { TextInput } from 'react-native';
 
 
@@ -14,50 +14,42 @@ function App() {
 
   let [result, setResult] = useState("show results here")
   
-  function textClickHandler(e) {
+  async function textClickHandler(e) {
     e.preventDefault()
-    let str = inputTextRef.current.value
-
-    // /*
-    fetch('./NamedEntityRecognitionTool/manage.py',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({string: str })
-    }).then(response => response.json())
-    .then(data => {setResult(data)})
-
-    // */
-    setResult(str)
-  } 
+    let topic = inputTextRef.current.value
+    const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
+        withCredentials: false,
+      });
+      const output = response.data.entity;
+      const output_format = output.replace(/\n/g, "<br />");
+    setResult(output_format)
+  }
 
 
-  function fileClickHandler(e) {
+function fileClickHandler(e) {
     e.preventDefault()
-    const file = inputFileRef.current.value
-    // /*
-    const formData = new FormData()
-    formData.append('file', {file})
-    fetch('./NamedEntityRecognitionTool/manage.py',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: formData
-    }).then(response => response.json())
-    .then(data => {setResult(data)})
-    // */
+    const file = inputFileRef.current.files[0];
+  
+    const formData = new FormData();
+    formData.append("file", file);
 
-    setResult(file)
-  } 
+    axios.post("./NamedEntityRecognitionTool/manage.py", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }).then(response => {
+        setResult(response.data);
+    }).catch(error => {
+      console.error(error);
+    });
+  }
   
 
   /* The state for WikiBlock. 
    * resultWiki is a string containing NER output.
    * setResultWiki acts as a function that changes resultWiki, with rerendering.
    */
-  // let [resultWiki, setResultWiki] = useState("show results here")
+  let [resultWiki, setResultWiki] = useState("show results here")
 
 
   /* handleSubmitWiki is the event handler for the WikiBlock. 
@@ -65,14 +57,14 @@ function App() {
    * which triggers django backend to run NER algorithm and send back json info,
    * which we then use to update our resultWiki state.
    */
-  // const handleSubmitWiki = async (topic) => {
-  //   const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
-  //     withCredentials: false,
-  //   });
-  //   const output = response.data.entity;
-  //   const output_format = output.replace(/\n/g, "<br />");
-  //   setResultWiki(output_format);
-  // }
+  const handleSubmitWiki = async (topic) => {
+    const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
+      withCredentials: false,
+    });
+    const output = response.data.entity;
+    const output_format = output.replace(/\n/g, "<br />");
+    setResult(output);
+  }
 
 
   /* We are currently focusing on 3 primary blocks: TextBlock, FileBlock, WikiBlock 
@@ -80,22 +72,6 @@ function App() {
    * TextBlock receives NER output from user input file.
    * WikiBlock receives NER output from user specified wikipedia topic.
    */
-  // return (
-  //   <div>
-  //     <h1>Named Entity Recognition Tool</h1>
-  //     <br/>
-  //     <TextBlock />
-  //     <br/>
-  //     <br/>
-  //     <FileBlock />
-  //     <br/>
-  //     <br/>
-  //     <WikiBlock onSubmitWiki={handleSubmitWiki}/>
-  //     <h3>Wiki Result:</h3>
-  //     <p dangerouslySetInnerHTML={{__html: resultWiki}} />
-  //   </div>
-  // );
-
   return (
     <>
     <div>
@@ -123,7 +99,7 @@ function App() {
            </form>
       </label>
       <div>
-        <h3>Input File</h3>
+        <h3>Input File (.txt file)</h3>
         <input type="file" ref={inputFileRef} />
       </div>
       <div>
@@ -134,7 +110,7 @@ function App() {
     </div>
     <div>
       <h3>Result:</h3>
-      <p>{result}</p>
+      <p dangerouslySetInnerHTML={{__html: result}} />
     </div>
     </>
   );
