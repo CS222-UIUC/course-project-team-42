@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
-// import TextBlock from './TextBlock';
-// import FileBlock from './FileBlock';
-// import WikiBlock from './WikiBlock';
-// import { TextInput } from 'react-native';
+// import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Switch } from 'react-router-dom';
+import Register from "./register"; 
+import Login from "./login"; 
 
 
 function App() {
@@ -24,8 +25,6 @@ function App() {
     const output_format = output.replace(/\n/g, "<br />");
     setResult(output_format)
   }
-
-
 
 function fileClickHandler(e) {
     e.preventDefault()
@@ -48,46 +47,62 @@ function fileClickHandler(e) {
 
 
   return (
-    <>
-    <div>
-      <h1>Named Entity Recognition Tool</h1>
-    </div>
-    <div>
-      <label>
-        <h3>Input Text</h3>
-          <form onSubmit={textClickHandler}>
-            <label>
-               <textarea 
-                ref={inputTextRef} 
-                multiline={true}
-                rows={10}
-                spellCheck={false}
-                placeholder="Input text here..."
-                style={{
-                  textAlignVertical: "top",
-                  width: 370, 
-                  height: 100, 
-                  borderWidth : 1.0}}/>
-            </label>
-            <br />
-              <button type="submit">submit text</button>
-           </form>
-      </label>
-      <div>
-        <h3>Input File (.txt file)</h3>
-        <input type="file" ref={inputFileRef} />
-      </div>
-      <div>
-        <button type="submit" onClick={fileClickHandler}> 
-          submit file
-        </button>
-      </div>
-    </div>
-    <div>
-      <h3>Result:</h3>
-      <p dangerouslySetInnerHTML={{__html: result}} />
-    </div>
-    </>
+    <Router>
+      <>
+        <div>
+          <h1>Named Entity Recognition Tool</h1>
+          <ul>
+            <li><Link to="/register">Register</Link></li>
+            <li><Link to="/login">Login</Link></li>
+          </ul>
+        </div>
+        <Switch>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+          <Route path="/">
+            <div>
+              <label>
+                <h3>Input Text</h3>
+                <form onSubmit={textClickHandler}>
+                  <label>
+                    <textarea 
+                      ref={inputTextRef} 
+                      multiline={true}
+                      rows={10}
+                      spellCheck={false}
+                      placeholder="Input text here..."
+                      style={{
+                        textAlignVertical: "top",
+                        width: 370, 
+                        height: 100, 
+                        borderWidth : 1.0}}/>
+                  </label>
+                  <br />
+                    <button type="submit">submit text</button>
+                </form>
+              </label>
+              <div>
+                <h3>Input File (.txt file)</h3>
+                <input type="file" ref={inputFileRef} />
+              </div>
+              <div>
+                <button type="submit" onClick={fileClickHandler}> 
+                  submit file
+                </button>
+              </div>
+            </div>
+            <div>
+              <h3>Result:</h3>
+              <p dangerouslySetInnerHTML={{__html: result}} />
+            </div>
+          </Route>
+        </Switch>
+      </>
+    </Router>
   );
 }
 
