@@ -20,7 +20,6 @@ function Login() {
     })
     const token = response.data.access
     setResult(`Your access token is ${token}`)
-    // 在这里可以将token存储到本地存储中，以便在其他页面中使用
   }
 
   return (

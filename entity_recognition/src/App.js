@@ -1,9 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
-// import { Link } from "react-router-dom";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Switch } from 'react-router-dom';
+import { BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
 import Register from "./register"; 
 import Login from "./login"; 
 
@@ -44,26 +42,21 @@ function fileClickHandler(e) {
     });
   } 
 
-
-
   return (
-    <Router>
+    <BrowserRouter>
       <>
         <div>
           <h1>Named Entity Recognition Tool</h1>
           <ul>
-            <li><Link to="/register">Register</Link></li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/register">Signup</Link></li>
             <li><Link to="/login">Login</Link></li>
           </ul>
         </div>
-        <Switch>
-          <Route path="/register">
-            <Register />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/">
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={
             <div>
               <label>
                 <h3>Input Text</h3>
@@ -94,15 +87,16 @@ function fileClickHandler(e) {
                   submit file
                 </button>
               </div>
+              <div>
+                <h3>Result:</h3>
+                <p dangerouslySetInnerHTML={{__html: result}} />
+              </div>
             </div>
-            <div>
-              <h3>Result:</h3>
-              <p dangerouslySetInnerHTML={{__html: result}} />
-            </div>
-          </Route>
-        </Switch>
+          } />
+        </Routes>
+        
       </>
-    </Router>
+    </BrowserRouter>
   );
 }
 

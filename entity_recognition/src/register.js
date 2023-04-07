@@ -31,7 +31,7 @@ function Register() {
 
   return (
     <div>
-      <h2>Register</h2>
+      <h2>Signup</h2>
       <form onSubmit={registerClickHandler}>
         <label>
           Username:
@@ -48,7 +48,7 @@ function Register() {
           <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
         </label>
         <br />
-        <button type="submit">Register</button>
+        <button type="submit">Signup</button>
       </form>
       <p>{registerResult}</p>
       <p>Already have an account? <Link to="/login">Login here.</Link></p>
