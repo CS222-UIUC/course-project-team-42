@@ -87,14 +87,13 @@ function fileClickHandler(e) {
                   submit file
                 </button>
               </div>
-              <div>
-                <h3>Result:</h3>
-                <p dangerouslySetInnerHTML={{__html: result}} />
-              </div>
             </div>
           } />
         </Routes>
-        
+        <div>
+                <h3>Result:</h3>
+                <p dangerouslySetInnerHTML={{__html: result}} />
+              </div>
       </>
     </BrowserRouter>
   );
