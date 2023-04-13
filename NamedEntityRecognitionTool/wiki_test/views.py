@@ -1,13 +1,10 @@
 from django.shortcuts import render
-
-# Create your views here.
-
 import json
 from django.contrib.auth.models import User 
 from django.http import JsonResponse , HttpResponse
-
 import wikipedia
 import spacy
+
 
 # default function.
 # this function will output a simple HttpResponse.
@@ -26,7 +23,6 @@ def getWikiSummary(request):
         content = wikipedia.page(topic).content
     except(wikipedia.exceptions.PageError):
         data = {
-            # 'summary': wikipedia.summary(topic,sentences=2),
             'content': "Error Message",
             'raw data': 'Unsuccessful',
             'entity': "Input is not a valid wiki page",
@@ -34,9 +30,7 @@ def getWikiSummary(request):
         return HttpResponse(JsonResponse(data))
     print('topic:', topic)
     ner_str = jsonToNER(content)
-    # 'content': wikipedia.page(topic).content,
     data = {
-        # 'summary': wikipedia.summary(topic,sentences=2),
         'content': content,
         'raw data': 'Successful',
         'entity': ner_str,
@@ -44,6 +38,36 @@ def getWikiSummary(request):
     print('json-data to be sent: ', data)
     return HttpResponse(JsonResponse(data))
 
+
+# this function obtains a request when url called in format http://127.0.0.1:8000/wiki/get_ner_freq/?topic="xxx"/
+# request.GET.get('topic', None) will obtain "xxx".
+# wikipedia.page(topic).content will get the main content (type str) of the specific wikipedia page.
+# will return a JsonResponse containing necessary data
+# main goal for this function is to get the top 10 frequencies from NER algorithm.
+def getWikiFreq(request):
+    topic = request.GET.get('topic', None)
+    try:
+        content = wikipedia.page(topic).content
+    except(wikipedia.exceptions.PageError):
+        data = {
+            'content': "Error Message",
+            'raw data': 'Unsuccessful',
+            'entity': "Input is not a valid wiki page",
+            'freq': "no frequency due to error",
+        }
+        return HttpResponse(JsonResponse(data))
+    print('topic:', topic)
+    ner_entity, ner_freq, ner_ent_10, ner_freq_10 = jsonToNERFreq(content)
+    data = {
+        'content': content,
+        'raw data': 'Successful',
+        'entity': ner_entity,
+        'freq': ner_freq,
+        'ent10': ner_ent_10,
+        'freq10': ner_freq_10,
+    }
+    print('json-data to be sent: ', data)
+    return JsonResponse(data)
 
 # main NER algorithm, using spacy library, en_core_web_sm training data.
 # input: str, wikipedia content
@@ -58,5 +82,37 @@ def jsonToNER(s):
         label = ent.label_
         if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
             output += (ent.text + " - " + ent.label_ + "\n") 
-        # print(ent.text, ent.label_)
     return output
+
+
+# main NER algorithm, using spacy library, en_core_web_sm training data.
+# input: str, wikipedia content
+# can change input to necessary text in future development
+# return type: entities json, freq json, ent10 json, freq10 json
+# returns 4 json objects, storing necessay names and frequencies
+def jsonToNERFreq(s):
+    nlp = spacy.load("en_core_web_sm")
+    doc = nlp(s)
+    output = {}
+    for ent in doc.ents:
+        label = ent.label_
+        if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
+            if ent.text not in output.keys():
+                output[ent.text] = 1
+            else:
+                output[ent.text] += 1
+
+    output = dict(sorted(output.items(), key = lambda x: x[1], reverse=True))
+    entities = []
+    freq = []
+    for i in output:
+        entities.append(i)
+        freq.append(output[i])
+    ent10 = entities[:10]
+    freq10 = freq[:10]
+    entities = json.dumps(entities)
+    freq = json.dumps(freq)
+    ent10 = json.dumps(ent10)
+    freq10 = json.dumps(freq10)
+
+    return entities, freq, ent10, freq10
