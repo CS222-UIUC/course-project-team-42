@@ -26,10 +26,11 @@ function App() {
   }
 
 
+
 function fileClickHandler(e) {
     e.preventDefault()
     const file = inputFileRef.current.files[0];
-  
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -42,8 +43,8 @@ function fileClickHandler(e) {
     }).catch(error => {
       console.error(error);
     });
-  }
-  
+  } 
+
 
 
   return (
