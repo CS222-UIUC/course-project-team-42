@@ -3,7 +3,7 @@ import axios from "axios";
 import './App.css';
 // import TextBlock from './TextBlock';
 // import FileBlock from './FileBlock';
-import WikiBlock from './WikiBlock';
+// import WikiBlock from './WikiBlock';
 // import { TextInput } from 'react-native';
 
 
