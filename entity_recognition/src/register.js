@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
+import './App.js';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -8,13 +9,13 @@ function Register() {
   let [username, setUsername] = useState("")
   let [password, setPassword] = useState("")
   let [confirmPassword, setConfirmPassword] = useState("")
-  let [registerResult, setRegisterResult] = useState("")
+  // let [registerResult, setRegisterResult] = useState("")
 
   async function registerClickHandler(e) {
     e.preventDefault()
 
     if (password !== confirmPassword) {
-      setRegisterResult("Passwords do not match.")
+      setResult("Passwords do not match.")
       return
     }
 
@@ -25,8 +26,8 @@ function Register() {
       withCredentials: true
     });
 
-    const output = response.data.message;
-    setRegisterResult(output)
+    // const output = response.data.message;
+    setResult("Sucessfully signed up!")
   }
 
   return (
