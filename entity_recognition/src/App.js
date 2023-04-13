@@ -12,6 +12,7 @@ function App() {
   let inputFileRef = useRef("")
 
   let [result, setResult] = useState("show results here")
+  let [token, setToken] = useState("false")
   
   async function textClickHandler(e) {
     e.preventDefault()
@@ -54,8 +55,8 @@ function fileClickHandler(e) {
           </ul>
         </div>
         <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register setResult={setResult}/>} />
+          <Route path="/login" element={<Login setResult={setResult} setToken={setToken} />} />
           <Route path="/" element={
             <div>
               <label>
@@ -91,9 +92,9 @@ function fileClickHandler(e) {
           } />
         </Routes>
         <div>
-                <h3>Result:</h3>
-                <p dangerouslySetInnerHTML={{__html: result}} />
-              </div>
+          <h3>Result:</h3>
+          <p dangerouslySetInnerHTML={{__html: result}} />
+        </div>
       </>
     </BrowserRouter>
   );
