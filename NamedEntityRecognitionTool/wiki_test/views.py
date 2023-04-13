@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse , HttpResponse
 import wikipedia
 import spacy
+import db_manager
 
 
 # default function.
@@ -116,3 +117,44 @@ def jsonToNERFreq(s):
     freq10 = json.dumps(freq10)
 
     return entities, freq, ent10, freq10
+
+# TEST FUNCTION FOR LOGIN
+# simple connection function for login
+# requires the front end to use axios.put, and pass a json object
+# json.loads will catch the json object, and read from it
+# the json object should contain username and password
+def login(request):
+    if request.method == 'PUT':
+        payload = json.loads(request.body.decode('utf-8'))
+        username = payload['username']
+        password = payload['password']
+        output = db_manager.userLoginCheck(username, password)
+        if output == None:
+            return HttpResponse("put fail")
+        return HttpResponse("put success")
+    elif request.method == 'GET':
+        return HttpResponse("testing: get success login")
+        
+    return HttpResponse("not a get or put")
+
+
+# TEST FUNCTION FOR CREATING NEW USER
+# simple connection function for creating new user
+# requires the front end to use axios.put, and pass a json object
+# json.loads will catch the json object, and read from it
+# the json object should contain username and password
+def login(request):
+    if request.method == 'PUT':
+        payload = json.loads(request.body.decode('utf-8'))
+        username = payload['username']
+        password = payload['password']
+        output = db_manager.userLoginCheck(username, password)
+        if output != None:
+            return HttpResponse("username already exists, no need to create")
+        else:
+           output = db_manager.userInformationAdd(username, password)
+        return HttpResponse("created username and password, please login again")
+    elif request.method == 'GET':
+        return HttpResponse("testing: get success create")
+        
+    return HttpResponse("not a get or put")

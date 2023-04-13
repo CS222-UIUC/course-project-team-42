@@ -2,6 +2,8 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+# print(sys.path)
+sys.path.append('C:\\Users\\yuxua\\Desktop\\CS222\\course-project-team-42\\NamedEntityRecognitionTool\\wiki_test')
 
 
 def main():
