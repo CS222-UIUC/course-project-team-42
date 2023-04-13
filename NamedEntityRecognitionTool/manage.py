@@ -4,9 +4,9 @@ import os
 import sys
 # print(sys.path)
 cwd = os.path.abspath(os.getcwd())
-print(cwd)
+# print(cwd)
 sys.path.append(cwd + '\\wiki_test') 
-print(sys.path)
+# print(sys.path)
 
 
 def main():

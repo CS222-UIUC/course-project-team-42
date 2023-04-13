@@ -143,7 +143,7 @@ def login(request):
 # requires the front end to use axios.put, and pass a json object
 # json.loads will catch the json object, and read from it
 # the json object should contain username and password
-def login(request):
+def create(request):
     if request.method == 'PUT':
         payload = json.loads(request.body.decode('utf-8'))
         username = payload['username']
