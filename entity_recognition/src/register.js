@@ -4,7 +4,8 @@ import './App.js';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function Register() {
+function Register(props) {
+  const { result, setResult } = props;
 
   let [username, setUsername] = useState("")
   let [password, setPassword] = useState("")
@@ -19,7 +20,7 @@ function Register() {
       return
     }
 
-    const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
+    const response = await axios.put('http://127.0.0.1:8000/wiki/create/', {
       username: username,
       password: password
     }, {
@@ -51,7 +52,7 @@ function Register() {
         <br />
         <button type="submit">Signup</button>
       </form>
-      <p>{registerResult}</p>
+      <p>{result}</p>
       <p>Already have an account? <Link to="/login">Login here.</Link></p>
     </div>
   );
