@@ -14,4 +14,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     re_path(r'^get_ner_on/$', views.getWikiSummary, name='get_ner_on'),
     re_path(r'^get_ner_freq/$', views.getWikiFreq, name='get_ner_freq'),
+    path('login', views.login, name='login'),
+    path('create', views.create, name='create'),
 ]

@@ -56,6 +56,6 @@ def userInformationDelete(userName: str, passWord: str):
 
 
 # we can use the code below for testing
-userInformationAdd("username_test","123456")
-userLoginCheck("username_test","123456")
-userInformationDelete("ds", "djsihi")
+# userInformationAdd("username_test","123456")
+# userLoginCheck("username_test","123456")
+# userInformationDelete("ds", "djsihi")
