@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault()
     const username = usernameRef.current.value
     const password = passwordRef.current.value
-    const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+    const response = await axios.put('http://127.0.0.1:8000/wiki/login', {
       username,
       password
     })

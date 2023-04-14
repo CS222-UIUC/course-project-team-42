@@ -19,7 +19,7 @@ function Register() {
       return
     }
 
-    const response = await axios.post('http://127.0.0.1:8000/accounts/register/', {
+    const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
       username: username,
       password: password
     }, {
