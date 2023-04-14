@@ -4,18 +4,18 @@ import './App.js';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-function Login() {
+function Login(props) {
+  const { result, setResult, setToken } = props;
 
   let usernameRef = useRef("")
   let passwordRef = useRef("")
-
-  let [result, setResult] = useState("")
+  // let [result, setResult] = useState("")
 
   async function submitHandler(e) {
     e.preventDefault()
     const username = usernameRef.current.value
     const password = passwordRef.current.value
-    const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+    const response = await axios.put('http://127.0.0.1:8000/wiki/login/', {
       username,
       password
     })
