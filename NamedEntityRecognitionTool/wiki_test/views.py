@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse , HttpResponse
 import wikipedia
 import spacy
-import db_manager
+from wiki_test import db_manager
 from django.views.decorators.csrf import csrf_exempt
 
 

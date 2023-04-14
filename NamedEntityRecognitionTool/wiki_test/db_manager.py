@@ -9,7 +9,7 @@ import uuid
 # when sucessfully added, will print the query, and close connection
 def userInformationAdd(userName: str, passWord: str):
     userUuid = uuid.uuid1()
-    connection = sqlite3.connect('userinfo.db')
+    connection = sqlite3.connect('wiki_test/userinfo.db')
     cursor = connection.cursor()
     quary  = '''
     INSERT INTO userinfo
@@ -26,7 +26,7 @@ def userInformationAdd(userName: str, passWord: str):
 # when sucessfully checked, will print the uuid key, and close connection
 # if password incorrect or username not exist, will print out none.
 def userLoginCheck(userName: str, passWord: str):
-    connection = sqlite3.connect('userinfo.db')
+    connection = sqlite3.connect('wiki_test/userinfo.db')
     cursor = connection.cursor()
     quary  = '''
     SELECT uuid
