@@ -15,13 +15,13 @@ function Login(props) {
     e.preventDefault()
     const username = usernameRef.current.value
     const password = passwordRef.current.value
-    const response = await axios.put('http://127.0.0.1:8000/wiki/login/', {
+    const response = await axios.put('http://127.0.0.1:8000/wiki/login', {
       username,
       password
     })
-    const token = response.data.access
+    const token = response.data
     setToken(token)
-    setResult(`Your access token is ${token}`)
+    setResult(token)
   }
 
   return (

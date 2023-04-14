@@ -131,8 +131,8 @@ def login(request):
         password = payload['password']
         output = db_manager.userLoginCheck(username, password)
         if output == None:
-            return HttpResponse("put fail")
-        return HttpResponse("put success")
+            return HttpResponse("Invalid username or password")
+        return HttpResponse("Successfully login!")
     elif request.method == 'GET':
         return HttpResponse("testing: get success login")
         
@@ -154,10 +154,10 @@ def create(request):
         # return HttpResponse(password)
         output = db_manager.userLoginCheck(username, password)
         if output != None:
-            return HttpResponse("username already exists, no need to create")
+            return HttpResponse("Username already exists.")
         else:
            output = db_manager.userInformationAdd(username, password)
-        return HttpResponse("created username and password, please login again")
+        return HttpResponse("Successfully created username and password! Please login now.")
     elif request.method == 'GET':
         return HttpResponse("testing: get success create")
         
