@@ -5,6 +5,7 @@ from django.http import JsonResponse , HttpResponse
 import wikipedia
 import spacy
 import db_manager
+from django.views.decorators.csrf import csrf_exempt
 
 
 # default function.
@@ -143,11 +144,14 @@ def login(request):
 # requires the front end to use axios.put, and pass a json object
 # json.loads will catch the json object, and read from it
 # the json object should contain username and password
+@csrf_exempt
 def create(request):
     if request.method == 'PUT':
+        # return HttpResponse("username already exists, no need to create")
         payload = json.loads(request.body.decode('utf-8'))
         username = payload['username']
         password = payload['password']
+        # return HttpResponse(password)
         output = db_manager.userLoginCheck(username, password)
         if output != None:
             return HttpResponse("username already exists, no need to create")
