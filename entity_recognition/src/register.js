@@ -26,7 +26,7 @@ function Register(props) {
     });
 
     // const output = response.data.message;
-    setResult("Sucessfully signed up!")
+    setResult(response.data)
   }
 
   return (
