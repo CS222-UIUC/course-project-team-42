@@ -2,6 +2,11 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+# print(sys.path)
+cwd = os.path.abspath(os.getcwd())
+# print(cwd)
+sys.path.append(cwd + '\\wiki_test') 
+# print(sys.path)
 
 
 def main():
