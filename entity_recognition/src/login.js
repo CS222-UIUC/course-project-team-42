@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
+import './App.js';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -19,6 +20,7 @@ function Login() {
       password
     })
     const token = response.data.access
+    setToken(token)
     setResult(`Your access token is ${token}`)
   }
 
