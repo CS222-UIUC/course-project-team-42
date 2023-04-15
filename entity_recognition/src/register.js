@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
+import Cookies from "js-cookie";
 import './App.js';
 import './App.css';
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -20,11 +21,20 @@ function Register(props) {
       return
     }
 
-    const response = await axios.put('http://127.0.0.1:8000/wiki/create/', {
+    // const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
+    //   username: username,
+    //   password: password
+    // });
+    const csrftoken = Cookies.get('csrftoken');
+
+    const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
       username: username,
       password: password
     }, {
-      withCredentials: true
+      withCredentials: true,
+      headers: {
+        'X-CSRFToken': csrftoken
+      }
     });
 
     // const output = response.data.message;

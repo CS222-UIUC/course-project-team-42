@@ -65,7 +65,7 @@ function fileClickHandler(e) {
                   <label>
                     <textarea 
                       ref={inputTextRef} 
-                      multiline={true}
+                      // multiline={true}
                       rows={10}
                       spellCheck={false}
                       placeholder="Input text here..."
