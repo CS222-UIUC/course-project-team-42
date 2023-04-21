@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
-import { BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Register from "./register"; 
 import Login from "./login"; 
 
@@ -16,7 +16,7 @@ function App() {
   
   async function textClickHandler(e) {
     e.preventDefault()
-    if (token != "Successfully login!") {
+    if (token !== "Successfully login!") {
       setResult("Please log in first!")
       return
     }
@@ -50,7 +50,7 @@ function fileClickHandler(e) {
   return (
     <BrowserRouter>
       <>
-        <div>
+        <div className="header">
           <h1>Named Entity Recognition Tool</h1>
           <ul>
             <li><Link to="/">Home</Link></li>
@@ -59,10 +59,10 @@ function fileClickHandler(e) {
           </ul>
         </div>
         <Routes>
-          <Route path="/register" element={<Register setResult={setResult}/>} />
+          <Route path="/register" element={<Register setResult={setResult} />} />
           <Route path="/login" element={<Login setResult={setResult} setToken={setToken} />} />
           <Route path="/" element={
-            <div>
+            <div className="main">
               <label>
                 <h3>Input Text</h3>
                 <form onSubmit={textClickHandler}>
@@ -80,28 +80,25 @@ function fileClickHandler(e) {
                         borderWidth : 1.0}}/>
                   </label>
                   <br />
-                    <button type="submit">submit text</button>
+                  <button type="submit" className="submit-button">submit text</button>
                 </form>
               </label>
-              <div>
                 <h3>Input File (.txt file)</h3>
                 <input type="file" ref={inputFileRef} />
-              </div>
-              <div>
-                <button type="submit" onClick={fileClickHandler}> 
+                <br />
+                <button type="submit" onClick={fileClickHandler} className="submit-button"> 
                   submit file
                 </button>
-              </div>
             </div>
           } />
         </Routes>
-        <div>
+        <div className="result">
           <h3>Result:</h3>
           <p dangerouslySetInnerHTML={{__html: result}} />
         </div>
       </>
     </BrowserRouter>
-  );
+  );  
 }
 
 
