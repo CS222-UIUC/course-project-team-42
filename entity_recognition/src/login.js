@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.js';
 import './App.css';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 function Login(props) {
   const { result, setResult, setToken } = props;
@@ -26,7 +26,7 @@ function Login(props) {
 
   return (
     <div>
-      <h1>Login</h1>
+      <h2>Login</h2>
       <form onSubmit={submitHandler}>
         <label>
           Username:
