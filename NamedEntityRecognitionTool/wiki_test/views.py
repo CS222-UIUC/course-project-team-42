@@ -21,6 +21,15 @@ def index(request):
 # will return an HttpResponse containing necessary data, transformed from json
 def getWikiSummary(request):
     topic = request.GET.get('topic', None)
+    if(len(topic) >= 300):
+        ner_str = jsonToNER(topic)
+        data = {
+            'content': topic,
+            'raw data': 'Successful',
+            'entity': ner_str,
+        }
+        return HttpResponse(JsonResponse(data))
+
     try:
         content = wikipedia.page(topic).content
     except(wikipedia.exceptions.PageError):
