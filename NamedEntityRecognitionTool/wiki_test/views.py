@@ -119,11 +119,13 @@ def jsonToNERFreq(s):
 
     return entities, freq, ent10, freq10
 
+
 # TEST FUNCTION FOR LOGIN
 # simple connection function for login
 # requires the front end to use axios.put, and pass a json object
 # json.loads will catch the json object, and read from it
 # the json object should contain username and password
+@csrf_exempt
 def login(request):
     if request.method == 'PUT':
         payload = json.loads(request.body.decode('utf-8'))
@@ -160,5 +162,51 @@ def create(request):
         return HttpResponse("Successfully created username and password! Please login now.")
     elif request.method == 'GET':
         return HttpResponse("testing: get success create")
+        
+    return HttpResponse("not a get or put")
+
+
+# TEST FUNCTION FOR RESETTING PASSWORD
+# simple connection function for password reset
+# requires the front end to use axios.put, and pass a json object
+# json.loads will catch the json object, and read from it
+# the json object should contain username and password
+@csrf_exempt
+def reset(request):
+    if request.method == 'PUT':
+        payload = json.loads(request.body.decode('utf-8'))
+        username = payload['username']
+        password = payload['password']
+        newPassword = payload['newPassword']
+        output = db_manager.userLoginCheck(username, password)
+        if output != None:
+            db_manager.userInformationDelete(username, password)
+            db_manager.userInformationAdd(username, newPassword)
+            return HttpResponse("Successfully reset password! Please login now.")
+        else:
+           return HttpResponse("Wrong username or password, please try again.")
+    elif request.method == 'GET':
+        return HttpResponse("testing: get success reset")
+        
+    return HttpResponse("not a get or put")
+
+
+# function recieves a file from client
+# requires the front end to use axios.put, and pass a file (txt)
+@csrf_exempt
+def upload(request):
+    if request.method == 'PUT':
+        file = request.FILES.get('file')
+        content = file.read()
+        ner_str = jsonToNER(content)
+        data = {
+            'content': content,
+            'raw data': 'Successful',
+            'entity': ner_str,
+        }
+        print('json-data to be sent: ', data)
+        return HttpResponse(JsonResponse(data))
+    elif request.method == 'GET':
+        return HttpResponse("testing: get success upload")
         
     return HttpResponse("not a get or put")
