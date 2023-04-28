@@ -102,8 +102,9 @@ textarea {
   background-color: #fff;
   border-radius: 0.25rem;
   box-shadow: 0 0 5px rgba(0,0,0,0.3);
-  width: 100%;
-  max-width: 40rem;
+
+  float: right;
+  width: 65%;
 }
 
 .result h3 {
@@ -115,4 +116,13 @@ textarea {
   padding: 1rem;
   border-radius: 0.25rem;
   background-color: #f5f5f5;
+}
+
+.row {
+  display: flex;
+}
+
+.main {
+  float: left;
+  width: 35%;
 }

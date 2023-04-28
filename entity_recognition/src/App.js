@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-// import { SelectButton } from 'primereact/selectbutton';
 import Register from "./register"; 
 import Login from "./login"; 
 
@@ -11,13 +10,8 @@ function App() {
 
   let inputTextRef = useRef("")
   let inputFileRef = useRef("")
-  const [value, setValue] = useState(null);
-  const items = [
-      { name: 'English', value: 1 },
-      { name: 'Chinese', value: 2 },
-      { name: 'Spanish', value: 3 }
-  ];
 
+  let [language, setLanguage] = useState("");
   let [result, setResult] = useState("show results here")
   let [token, setToken] = useState("false")
   
@@ -29,7 +23,7 @@ function App() {
     }
     setResult("loading")
     let topic = inputTextRef.current.value
-    const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
+    const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on${language}/?topic="${topic}"`, {
         withCredentials: false,
       });
     const output = response.data.entity;
@@ -47,13 +41,16 @@ function App() {
     const file = inputFileRef.current.files[0];
 
     const formData = new FormData();
-    formData.append("file", file, file.name);
+    formData.append("file", file);
     const response = await axios.post('http://127.0.0.1:8000/wiki/upload', formData)
-    const output = response.data;
+    const output = response.data.entity;
     const output_format = output.replace(/\n/g, "<br />");
     setResult(output_format)
     } 
 
+  const handleLanChange = (event) => {
+    setLanguage(event.target.value);
+  };
   return (
     <BrowserRouter>
       <>
@@ -65,6 +62,7 @@ function App() {
             <li><Link to="/login">Login</Link></li>
           </ul>
         </div>
+        <div className='row'>
         <Routes>
           <Route path="/register" element={<Register setResult={setResult} />} />
           <Route path="/login" element={<Login setResult={setResult} setToken={setToken} />} />
@@ -87,9 +85,15 @@ function App() {
                         borderWidth : 1.0}}/>
                   </label>
                   <br />
-                  {/* <div>
-                  <SelectButton value={value} onChange={(e) => setValue(e.value)} optionLabel="name" options={items} />  
-                  </div> */}
+                  <div>
+                  <select  value={language} onChange={handleLanChange}>
+                        <option value="">English</option>
+                        <option value="_zh">Chinese</option>
+                        <option value="_es">Spanish</option>
+                        value={language}
+                        onChange={handleLanChange}
+                  </select>
+                  </div>
                   <button type="submit" className="submit-button">submit text</button>
                 </form>
               </label>
@@ -111,6 +115,7 @@ function App() {
           <h3>Result:</h3>
           <p dangerouslySetInnerHTML={{__html: result}} />
         </div>
+      </div>
       </>
     </BrowserRouter>
   );  

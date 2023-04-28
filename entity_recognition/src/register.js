@@ -31,7 +31,7 @@ function Register(props) {
   }
 
   return (
-    <div>
+    <div className='main'>
       <h2>Signup</h2>
       <form onSubmit={registerClickHandler}>
         <label>
