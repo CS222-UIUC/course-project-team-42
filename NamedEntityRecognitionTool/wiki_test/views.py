@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse , HttpResponse
 import wikipedia
 import spacy
-import db_manager
+from wiki_test import db_manager
+from django.views.decorators.csrf import csrf_exempt
 
 
 # default function.
@@ -130,8 +131,8 @@ def login(request):
         password = payload['password']
         output = db_manager.userLoginCheck(username, password)
         if output == None:
-            return HttpResponse("put fail")
-        return HttpResponse("put success")
+            return HttpResponse("Invalid username or password")
+        return HttpResponse("Successfully login!")
     elif request.method == 'GET':
         return HttpResponse("testing: get success login")
         
@@ -143,17 +144,20 @@ def login(request):
 # requires the front end to use axios.put, and pass a json object
 # json.loads will catch the json object, and read from it
 # the json object should contain username and password
+@csrf_exempt
 def create(request):
     if request.method == 'PUT':
+        # return HttpResponse("username already exists, no need to create")
         payload = json.loads(request.body.decode('utf-8'))
         username = payload['username']
         password = payload['password']
+        # return HttpResponse(password)
         output = db_manager.userLoginCheck(username, password)
         if output != None:
-            return HttpResponse("username already exists, no need to create")
+            return HttpResponse("Username already exists.")
         else:
            output = db_manager.userInformationAdd(username, password)
-        return HttpResponse("created username and password, please login again")
+        return HttpResponse("Successfully created username and password! Please login now.")
     elif request.method == 'GET':
         return HttpResponse("testing: get success create")
         

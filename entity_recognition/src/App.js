@@ -16,6 +16,10 @@ function App() {
   
   async function textClickHandler(e) {
     e.preventDefault()
+    if (token != "Successfully login!") {
+      setResult("Please log in first!")
+      return
+    }
     let topic = inputTextRef.current.value
     const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
         withCredentials: false,

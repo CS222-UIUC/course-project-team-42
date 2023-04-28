@@ -21,24 +21,13 @@ function Register(props) {
       return
     }
 
-    // const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
-    //   username: username,
-    //   password: password
-    // });
-    const csrftoken = Cookies.get('csrftoken');
-
     const response = await axios.put('http://127.0.0.1:8000/wiki/create', {
-      username: username,
-      password: password
-    }, {
-      withCredentials: true,
-      headers: {
-        'X-CSRFToken': csrftoken
-      }
+      "username": username,
+      "password": password
     });
 
     // const output = response.data.message;
-    setResult("Sucessfully signed up!")
+    setResult(response.data)
   }
 
   return (

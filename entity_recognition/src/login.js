@@ -19,9 +19,9 @@ function Login(props) {
       username,
       password
     })
-    const token = response.data.access
+    const token = response.data
     setToken(token)
-    setResult(`Your access token is ${token}`)
+    setResult(token)
   }
 
   return (
