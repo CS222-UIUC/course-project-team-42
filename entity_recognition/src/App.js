@@ -47,9 +47,9 @@ function App() {
     const file = inputFileRef.current.files[0];
 
     const formData = new FormData();
-    formData.append("file", file, file.name);
+    formData.append("file", file);
     const response = await axios.post('http://127.0.0.1:8000/wiki/upload', formData)
-    const output = response.data;
+    const output = response.data.entity;
     const output_format = output.replace(/\n/g, "<br />");
     setResult(output_format)
     } 
