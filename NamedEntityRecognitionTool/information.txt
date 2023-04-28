@@ -5,6 +5,8 @@ pipenv install django-cors-headers
 pipenv install wikipedia
 pipenv install spaCy
 python -m spacy download en_core_web_sm
+python -m spacy download zh_core_web_sm
+python -m spacy download es_core_news_sm
 
 // need to run this everytime you want to start server
 pipenv shell
