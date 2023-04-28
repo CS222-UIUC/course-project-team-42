@@ -279,10 +279,13 @@ def reset(request):
 # requires the front end to use axios.put, and pass a file (txt)
 @csrf_exempt
 def upload(request):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         file = request.FILES.get('file')
+        if file is None:
+            return HttpResponse("file not found")
         content = file.read()
         ner_str = jsonToNER(content, 0)
+        return HttpResponse("to here")
         data = {
             'content': content,
             'raw data': 'Successful',
@@ -290,7 +293,8 @@ def upload(request):
         }
         print('json-data to be sent: ', data)
         return HttpResponse(JsonResponse(data))
+
     elif request.method == 'GET':
         return HttpResponse("testing: get success upload")
         
-    return HttpResponse("not a get or put")
+    return HttpResponse("not a get or post")
