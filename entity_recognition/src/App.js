@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
-import { BrowserRouter, Routes, Router, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Register from "./register"; 
 import Login from "./login"; 
 
@@ -16,10 +16,11 @@ function App() {
   
   async function textClickHandler(e) {
     e.preventDefault()
-    if (token != "Successfully login!") {
+    if (token !== "Successfully login!") {
       setResult("Please log in first!")
       return
     }
+    setResult("loading")
     let topic = inputTextRef.current.value
     const response = await axios.get(`http://127.0.0.1:8000/wiki/get_ner_on/?topic="${topic}"`, {
         withCredentials: false,
@@ -29,28 +30,27 @@ function App() {
     setResult(output_format)
   }
 
-function fileClickHandler(e) {
+  async function fileClickHandler(e) {
     e.preventDefault()
+    if (token !== "Successfully login!") {
+      setResult("Please log in first!")
+      return
+    }
+    setResult("loading")
     const file = inputFileRef.current.files[0];
 
     const formData = new FormData();
-    formData.append("file", file);
-
-    axios.post("./NamedEntityRecognitionTool/manage.py", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data"
-      }
-    }).then(response => {
-        setResult(response.data);
-    }).catch(error => {
-      console.error(error);
-    });
-  } 
+    formData.append("file", file, file.name);
+    const response = await axios.post('http://127.0.0.1:8000/wiki/upload', formData)
+    const output = response.data;
+    const output_format = output.replace(/\n/g, "<br />");
+    setResult(output_format)
+    } 
 
   return (
     <BrowserRouter>
       <>
-        <div>
+        <div className="header">
           <h1>Named Entity Recognition Tool</h1>
           <ul>
             <li><Link to="/">Home</Link></li>
@@ -59,10 +59,10 @@ function fileClickHandler(e) {
           </ul>
         </div>
         <Routes>
-          <Route path="/register" element={<Register setResult={setResult}/>} />
+          <Route path="/register" element={<Register setResult={setResult} />} />
           <Route path="/login" element={<Login setResult={setResult} setToken={setToken} />} />
           <Route path="/" element={
-            <div>
+            <div className="main">
               <label>
                 <h3>Input Text</h3>
                 <form onSubmit={textClickHandler}>
@@ -80,28 +80,31 @@ function fileClickHandler(e) {
                         borderWidth : 1.0}}/>
                   </label>
                   <br />
-                    <button type="submit">submit text</button>
+                  <button type="submit" className="submit-button">submit text</button>
                 </form>
               </label>
-              <div>
-                <h3>Input File (.txt file)</h3>
-                <input type="file" ref={inputFileRef} />
-              </div>
-              <div>
-                <button type="submit" onClick={fileClickHandler}> 
+              <h3>Input File (.txt file)</h3>
+              <form onSubmit={fileClickHandler} enctype="multipart/form-data">
+              {/* <form action='http://127.0.0.1:8000/wiki/upload' method="POST" enctype="multipart/form-data"> */}
+              <label>
+                <input type="file" ref={inputFileRef} accept='.txt' id='file'/>
+                <br />
+                <button type="submit" className="submit-button"> 
                   submit file
                 </button>
-              </div>
+              </label>
+              </form>
+
             </div>
           } />
         </Routes>
-        <div>
+        <div className="result">
           <h3>Result:</h3>
           <p dangerouslySetInnerHTML={{__html: result}} />
         </div>
       </>
     </BrowserRouter>
-  );
+  );  
 }
 
 
