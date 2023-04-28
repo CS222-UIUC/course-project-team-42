@@ -283,11 +283,12 @@ def upload(request):
         file = request.FILES.get('file')
         if file is None:
             return HttpResponse("file not found")
-        content = file.read()
-        ner_str = jsonToNER(content, 0)
-        return HttpResponse("to here")
+        topic_bytes = file.read()
+        topic = str(topic_bytes)[1:]
+        ner_str = jsonToNER(topic, 0)
+        print(ner_str)
         data = {
-            'content': content,
+            'content': topic,
             'raw data': 'Successful',
             'entity': ner_str,
         }
