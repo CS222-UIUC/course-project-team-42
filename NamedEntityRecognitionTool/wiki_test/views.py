@@ -210,7 +210,7 @@ def upload(request):
             return HttpResponse("not success")
         else:
             content = file.read()
-            ner_str = jsonToNER(content)
+            ner_str = jsonToNER(content,0)
             # return HttpResponse(content)
             data = {
                 'content': content,
