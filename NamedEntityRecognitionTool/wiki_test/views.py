@@ -288,6 +288,7 @@ def upload(request):
         if file is None:
             return HttpResponse("file not found")
         topic_bytes = file.read()
+        print(topic_bytes)
         topic = str(topic_bytes)[1:]
         ner_str = jsonToNER(topic, 0)
         print(ner_str)

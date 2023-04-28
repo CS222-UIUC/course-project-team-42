@@ -43,10 +43,11 @@ function App() {
     const formData = new FormData();
     formData.append("file", file);
     const response = await axios.post('http://127.0.0.1:8000/wiki/upload', formData)
+    setResult("to here")
     const output = response.data.entity;
     const output_format = output.replace(/\n/g, "<br />");
     setResult(output_format)
-    } 
+  } 
 
   const handleLanChange = (event) => {
     setLanguage(event.target.value);
