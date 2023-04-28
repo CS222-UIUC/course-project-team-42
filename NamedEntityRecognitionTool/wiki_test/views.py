@@ -22,7 +22,7 @@ def index(request):
 def getWikiSummary(request):
     topic = request.GET.get('topic', None)
     if(len(topic) >= 300):
-        ner_str = jsonToNER(topic)
+        ner_str = jsonToNER(topic, 0)
         data = {
             'content': topic,
             'raw data': 'Successful',
@@ -40,7 +40,7 @@ def getWikiSummary(request):
         }
         return HttpResponse(JsonResponse(data))
     print('topic:', topic)
-    ner_str = jsonToNER(content)
+    ner_str = jsonToNER(content, 0)
     data = {
         'content': content,
         'raw data': 'Successful',
@@ -68,7 +68,7 @@ def getWikiFreq(request):
         }
         return HttpResponse(JsonResponse(data))
     print('topic:', topic)
-    ner_entity, ner_freq, ner_ent_10, ner_freq_10 = jsonToNERFreq(content)
+    ner_entity, ner_freq, ner_ent_10, ner_freq_10 = jsonToNERFreq(content, 0)
     data = {
         'content': content,
         'raw data': 'Successful',
@@ -80,18 +80,88 @@ def getWikiFreq(request):
     print('json-data to be sent: ', data)
     return JsonResponse(data)
 
+
+# this function obtains a request when url called in format http://127.0.0.1:8000/wiki/get_ner_on_zh/?topic="xxx"/
+# request.GET.get('topic', None) will obtain "xxx".
+# will return an HttpResponse containing necessary data, transformed from json
+def getZhTopic(request):
+    topic = request.GET.get('topic', None)
+    if (len(topic) >= 0):
+        ner_str = jsonToNER(topic, 1)
+        data = {
+            'content': topic,
+            'raw data': 'Successful',
+            'entity': ner_str,
+        }
+        return HttpResponse(JsonResponse(data))
+    
+
+# this function obtains a request when url called in format http://127.0.0.1:8000/wiki/get_ner_on_es/?topic="xxx"/
+# request.GET.get('topic', None) will obtain "xxx".
+# will return an HttpResponse containing necessary data, transformed from json
+def getEsTopic(request):
+    topic = request.GET.get('topic', None)
+    if (len(topic) >= 0):
+        ner_str = jsonToNER(topic, 2)
+        data = {
+            'content': topic,
+            'raw data': 'Successful',
+            'entity': ner_str,
+        }
+        return HttpResponse(JsonResponse(data))
+
+
+# helper function, checks the NER tag labels.
+# we focus on labels with PERSON, ORG, GPE, LOC, DATE, TIME,
+# PERCENT, MONEY, WORK_OF_ART, EVENT, ORDINAL, and CARDINAL
+# each return value corresponds to a specfic label type.
+# a return of 0 means no match.
+def checkNERLabel(label):
+    if label == "PERSON":       # People, including fictional
+        return 1
+    if label == "ORG":          # Organizations, companies, institutions
+        return 2
+    if label == "GPE":          # Countries, cites, states
+        return 3
+    if label == "LOC":          # Non GPE locations, including mountains, water
+        return 4
+    if label == "DATE":         # Dates or periods
+        return 5
+    if label == "TIME":         # times smaller than day
+        return 6
+    if label == "PERCENT":      # percentage with the % symbol
+        return 7
+    if label == "MONEY":        # monetary values, including unit money
+        return 8
+    if label == "WORK_OF_ART":  # books, songs, arts
+        return 9
+    if label == "EVENT":        # battles, wars, sports events, tornados
+        return 10
+    if label == "ORDINAL":      # "first", "second", etc
+        return 11
+    if label == "CARDINAL":     # Numerals that do not fall in another type
+        return 12
+    return 0
+
+
 # main NER algorithm, using spacy library, en_core_web_sm training data.
-# input: str, wikipedia content
+# input: str, language
+# language 0 is en, language 1 is zh, language 2 is es
 # can change input to necessary text in future development
 # return type: str
 # returns a concatenated str of named entities with their corresponding tags
-def jsonToNER(s):
-    nlp = spacy.load("en_core_web_sm")
+def jsonToNER(s, language):
+    model = "en_core_web_sm"
+    if (language == 1):
+        model = "zh_core_web_sm"
+    elif (language == 2):
+        model = "es_core_news_sm"
+    nlp = spacy.load(model)
     doc = nlp(s)
     output = ""
     for ent in doc.ents:
         label = ent.label_
-        if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
+        if (checkNERLabel(label) > 0):
             output += (ent.text + " - " + ent.label_ + "\n") 
     return output
 
@@ -101,13 +171,18 @@ def jsonToNER(s):
 # can change input to necessary text in future development
 # return type: entities json, freq json, ent10 json, freq10 json
 # returns 4 json objects, storing necessay names and frequencies
-def jsonToNERFreq(s):
-    nlp = spacy.load("en_core_web_sm")
+def jsonToNERFreq(s, language):
+    model = "en_core_web_sm"
+    if (language == 1):
+        model = "zh_core_web_sm"
+    elif (language == 2):
+        model = "es_core_news_sm"
+    nlp = spacy.load(model)
     doc = nlp(s)
     output = {}
     for ent in doc.ents:
         label = ent.label_
-        if (label == "PERSON") or (label == "ORG") or (label == "LOC") or (label == "DATE"):
+        if (checkNERLabel(label) > 0):
             if ent.text not in output.keys():
                 output[ent.text] = 1
             else:
@@ -207,19 +282,19 @@ def upload(request):
     if request.method == 'POST':
         file = request.FILES.get('file')
         if file is None:
-            return HttpResponse("not success")
-        else:
-            content = file.read()
-            ner_str = jsonToNER(content,0)
-            # return HttpResponse(content)
-            data = {
-                'content': content,
-                'raw data': 'Successful',
-                'entity': ner_str,
-            }
-            print('json-data to be sent: ', data)
-            return HttpResponse(JsonResponse(data))
+            return HttpResponse("file not found")
+        content = file.read()
+        ner_str = jsonToNER(content, 0)
+        return HttpResponse("to here")
+        data = {
+            'content': content,
+            'raw data': 'Successful',
+            'entity': ner_str,
+        }
+        print('json-data to be sent: ', data)
+        return HttpResponse(JsonResponse(data))
+
     elif request.method == 'GET':
         return HttpResponse("testing: get success upload")
         
-    return HttpResponse("not a get or put")
+    return HttpResponse("not a get or post")

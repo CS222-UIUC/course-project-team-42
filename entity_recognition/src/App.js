@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import axios from "axios";
 import './App.css';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { SelectButton } from 'primereact/selectbutton';
+// import { SelectButton } from 'primereact/selectbutton';
 import Register from "./register"; 
 import Login from "./login"; 
 
@@ -87,9 +87,9 @@ function App() {
                         borderWidth : 1.0}}/>
                   </label>
                   <br />
-                  <div>
+                  {/* <div>
                   <SelectButton value={value} onChange={(e) => setValue(e.value)} optionLabel="name" options={items} />  
-                  </div>
+                  </div> */}
                   <button type="submit" className="submit-button">submit text</button>
                 </form>
               </label>

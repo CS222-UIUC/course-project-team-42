@@ -13,6 +13,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     re_path(r'^get_ner_on/$', views.getWikiSummary, name='get_ner_on'),
+    re_path(r'^get_ner_on_zh/$', views.getZhTopic, name='get_ner_on_zh'),
+    re_path(r'^get_ner_on_es/$', views.getEsTopic, name='get_ner_on_es'),
     re_path(r'^get_ner_freq/$', views.getWikiFreq, name='get_ner_freq'),
     path('login', views.login, name='login'),
     path('create', views.create, name='create'),
