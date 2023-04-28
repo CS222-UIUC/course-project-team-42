@@ -93,7 +93,9 @@ def getZhTopic(request):
             'raw data': 'Successful',
             'entity': ner_str,
         }
-        return HttpResponse(JsonResponse(data))
+    print('topic:', topic)
+    print('json-data to be sent: ', data)
+    return HttpResponse(JsonResponse(data))
     
 
 # this function obtains a request when url called in format http://127.0.0.1:8000/wiki/get_ner_on_es/?topic="xxx"/
@@ -108,7 +110,9 @@ def getEsTopic(request):
             'raw data': 'Successful',
             'entity': ner_str,
         }
-        return HttpResponse(JsonResponse(data))
+    print('topic:', topic)
+    print('json-data to be sent: ', data)
+    return HttpResponse(JsonResponse(data))
 
 
 # helper function, checks the NER tag labels.
@@ -284,6 +288,7 @@ def upload(request):
         if file is None:
             return HttpResponse("file not found")
         topic_bytes = file.read()
+        print(topic_bytes)
         topic = str(topic_bytes)[1:]
         ner_str = jsonToNER(topic, 0)
         print(ner_str)
