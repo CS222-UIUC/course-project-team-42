@@ -62,3 +62,7 @@ python manage.py runserver              //make sure to be in the same directory 
 cd entity_recognition
 npm start                               //make sure to be in the same directory as Client (entity_recognition)
 ```
+
+### Video and PPT
+[This is our video link.](https://mediaspace.illinois.edu/media/t/1_oipfb032)  
+[This is our final presentation PPT.](https://docs.google.com/presentation/d/1DdyozNtkokSRbQuShwSyJ7fiJrdYEkkm1MfNeddW8SU/edit#slide=id.p)
